@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+  <!-- Product Specific Strings -->
+  <String Id="ProductName_x86">GitSync (32-bit)</String>
+  <String Id="ProductName_x64">GitSync (64-bit)</String>
+  <String Id="Description">A tool for those who work with lots of git repos</String>
+  <String Id="Comments">A tool for those who work with lots of git repos</String>
+  <String Id="Keywords">GitSync</String>
+  
+  <!-- Language Code -->
+  <String Id="Language">1033</String>
+
+</WixLocalization>

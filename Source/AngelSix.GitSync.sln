@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngelSix.GitSync", "AngelSix.GitSync\AngelSix.GitSync.csproj", "{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "AngelSix.GitSync.Installer", "AngelSix.GitSync.Installer\AngelSix.GitSync.Installer.wixproj", "{5E8EB9EC-9D40-4A93-A6B9-2F25DFBCA43F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Debug|x64.Build.0 = Debug|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Release|x64.ActiveCfg = Release|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Release|x64.Build.0 = Release|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA2C0C3B-36A6-4F0E-9B0F-81BAA722994F}.Release|x86.Build.0 = Release|Any CPU
+		{5E8EB9EC-9D40-4A93-A6B9-2F25DFBCA43F}.Debug|x64.ActiveCfg = Debug|x64
+		{5E8EB9EC-9D40-4A93-A6B9-2F25DFBCA43F}.Debug|x86.ActiveCfg = Debug|x86
+		{5E8EB9EC-9D40-4A93-A6B9-2F25DFBCA43F}.Release|x64.ActiveCfg = Release|x64
+		{5E8EB9EC-9D40-4A93-A6B9-2F25DFBCA43F}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01828CE0-8602-4F1D-BB77-19AC8E0AFCC1}
+	EndGlobalSection
+EndGlobal

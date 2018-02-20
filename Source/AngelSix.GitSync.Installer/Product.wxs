@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Common includes -->
+<?include Common.wxi?>
+
+<!-- 
+    To release a new version
+    
+    1. Change the ProductCode for both 32 and 64bit to new GUIDs
+    2. Change AngelSix.GitSync Assembly Version to new version (x.x.x.y)
+         NOTE: Updating last digit (y) won't cause old version to be removed
+               Update one of the first 3 digits to trigger an upgrade/remove old version
+    3. Build each installer (change configuration to Release)
+
+-->
+
+<!-- Set a specific product code based on the processor architecture build variable -->
+<?if $(var.Platform)=x64 ?>
+<?define ProductCode = "{2E90DE41-C7EE-4792-99C0-967EE7CEDED6}" ?>
+<?else ?>
+<?define ProductCode = "{474613D6-FA7D-4F3D-8D0D-DBCBC0EBD01F}" ?>
+<?endif ?>
+<?define UpgradeCode = "{92079C05-8E2B-4161-853E-D462599E184E}" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  
+  <Product Id="$(var.ProductCode)" 
+           Name="!(loc.ProductName_$(var.Platform)) $(var.BuildVersion)"
+           Language="1033"
+           Version="$(var.BuildVersion)"
+           Manufacturer="$(var.CompanyName)" 
+           UpgradeCode="$(var.UpgradeCode)">
+
+    <Package InstallerVersion="200"
+             InstallScope="perMachine"
+             Compressed="yes"
+             Keywords="!(loc.Keywords)"
+             Description="!(loc.Description)"
+             Comments="!(loc.Comments)"
+             Languages="!(loc.Language)"
+             Manufacturer="$(var.CompanyName)"
+             InstallPrivileges="elevated"
+             Platform="$(var.Platform)" />
+
+
+    <!-- Open change log once finished install -->
+    <Property Id="MyURL"><![CDATA[http://www.github.com/angelsix/gitsync]]></Property>
+    <CustomAction Id="SetOpenURL" Property="WixShellExecTarget" Value="[MyURL]" />
+    <CustomAction Id="OpenURL" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" Return="ignore" />
+
+    <!-- 
+    Installation sequence     
+    -->
+    <InstallExecuteSequence>
+
+      <!-- Launch webpage after an install install -->
+      <Custom Action="SetOpenURL" After="InstallFinalize">NOT Installed AND NOT REMOVEM</Custom>
+      <Custom Action="OpenURL" After="SetOpenURL">NOT Installed AND NOT REMOVE</Custom>
+      
+    </InstallExecuteSequence>
+
+    <!-- Remove old versions -->
+    <MajorUpgrade DowngradeErrorMessage="A later version of GitSync is already installed. Setup will now exit." />
+    
+    <!-- Use default media details (.cab file) -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- Icon -->
+    <Icon Id="icon.ico" SourceFile="$(var.AngelSix.GitSync.ProjectDir)\icon.ico"/>
+
+    <!-- Add/Remove Programs Support -->
+    <Property Id="ARPURLINFOABOUT">https://github.com/angelsix/gitsync</Property>
+    <Property Id="ARPPRODUCTICON">icon.ico</Property>
+    
+    <!-- User interface -->
+    <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\license.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp" />
+
+    <Feature Id="ProductFeature" Title="GitSync" Level="1">
+      
+      <!-- Our Stuff -->
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="GitSync" />
+
+      <!-- Directories in Directories.wxs -->
+
+      <!-- Components in Components.wxs -->
+
+    </Feature>
+
+  </Product>
+
+</Wix>
