@@ -172,7 +172,7 @@ namespace AngelSix.GitSync
 
                 #region Help
 
-                if (!commandUnderstood && (command == "help"))
+                if (!commandUnderstood && command == "help")
                 {
                     Console.WriteLine("");
                     Console.WriteLine("-d [folder]".PadRight(13) + "Specify parent git folder");
@@ -210,7 +210,7 @@ namespace AngelSix.GitSync
                 #region Exit
 
                 // If the user did not enter anything, then exit
-                if (args == null || args.Length == 0)
+                if (!commandUnderstood && (args == null || args.Length == 0))
                     return;
 
                 #endregion
