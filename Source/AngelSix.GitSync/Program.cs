@@ -39,7 +39,7 @@ namespace AngelSix.GitSync
         //    - AngelSix
         //   
 
-        static Process process = new Process();
+        static Process GitSyncProcess = new Process();
 
         private static string SettingsFilename = "settings.json";
 
@@ -450,7 +450,7 @@ namespace AngelSix.GitSync
             // Load mode and directory
             if (args?.Length > 0)
             {
-                for (int i = 0; i < args.Length; i++)
+                for (var i = 0; i < args.Length; i++)
                 {
                     if (args[i] == "-c")
                         settings.Mode = OperationMode.Check;
