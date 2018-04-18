@@ -86,9 +86,7 @@ namespace AngelSix.GitSync
                 Console.WriteLine("");
             }
 
-            var more = true;
-
-            while (more)
+            while (true)
             {
                 #region Initialize
 
@@ -132,7 +130,15 @@ namespace AngelSix.GitSync
                 #region Simple Command
 
                 // Ask for initial simple command
-                Console.WriteLine("What command would you like? branch (b), check (c), clean (C), pull (p), push (P) or help for advanced");
+                Console.Write(
+                    "What command would you like? \n\n" +
+                    "  b - branch \n" + 
+                    "  c - check \n" + 
+                    "  C - clean \n" +
+                    "  p - pull \n" +
+                    "  P - push \n" +
+                    "  help - for more information \n\n" +
+                    "Press enter to exit...\n");
                 var command = Console.ReadLine();
                 var commandUnderstood = false;
 
@@ -166,7 +172,7 @@ namespace AngelSix.GitSync
 
                 #region Help
 
-                if (!commandUnderstood && (command == "help" || args == null || args.Length == 0))
+                if (!commandUnderstood && (command == "help"))
                 {
                     Console.WriteLine("");
                     Console.WriteLine("-d [folder]".PadRight(13) + "Specify parent git folder");
@@ -196,9 +202,16 @@ namespace AngelSix.GitSync
                     Console.WriteLine("-d . -P -F".PadRight(13) + "Tries to push all local changes regardless of conflicts or local changes");
                     Console.WriteLine("");
 
-                    more = DoMore();
                     continue;
                 }
+
+                #endregion
+
+                #region Exit
+
+                // If the user did not enter anything, then exit
+                if (args == null || args.Length == 0)
+                    return;
 
                 #endregion
 
@@ -207,14 +220,12 @@ namespace AngelSix.GitSync
                 if (settings.Mode == OperationMode.None)
                 {
                     Console.WriteLine("No mode specified");
-                    more = DoMore();
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(settings.Directory))
                 {
                     Console.WriteLine($"Please specify a folder with -d folder");
-                    more = DoMore();
                     continue;
                 }
 
@@ -420,7 +431,8 @@ namespace AngelSix.GitSync
                     }
                 }
 
-                more = DoMore();
+                // Let the user know that the task has finished
+                Console.WriteLine("\nFinished task.\n");
             }
         }
 
