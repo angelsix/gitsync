@@ -39,7 +39,7 @@ namespace AngelSix.GitSync
         //    - AngelSix
         //   
 
-        static Process process = new Process();
+        static Process MainProcess = new Process();
 
         private static string SettingsFilename = "settings.json";
 
@@ -132,7 +132,7 @@ namespace AngelSix.GitSync
                 #region Simple Command
 
                 // Ask for initial simple command
-                Console.WriteLine("What command would you like? branch (b), check (c), clean (C), pull (p), push (P) or help for advanced");
+                Console.WriteLine("branch (b), check (c), clean (C), pull (p), push (P), quit (q) or ? for advanced");
                 var command = Console.ReadLine();
                 var commandUnderstood = false;
 
@@ -160,6 +160,11 @@ namespace AngelSix.GitSync
                 {
                     settings.Mode = OperationMode.Push;
                     commandUnderstood = true;
+                }
+                else if (command == "q" || command == "Q" || command == "")
+                {
+                    more = false;
+                    continue;
                 }
 
                 #endregion
@@ -196,7 +201,6 @@ namespace AngelSix.GitSync
                     Console.WriteLine("-d . -P -F".PadRight(13) + "Tries to push all local changes regardless of conflicts or local changes");
                     Console.WriteLine("");
 
-                    more = DoMore();
                     continue;
                 }
 
@@ -207,14 +211,12 @@ namespace AngelSix.GitSync
                 if (settings.Mode == OperationMode.None)
                 {
                     Console.WriteLine("No mode specified");
-                    more = DoMore();
                     continue;
                 }
 
                 if (string.IsNullOrEmpty(settings.Directory))
                 {
                     Console.WriteLine($"Please specify a folder with -d folder");
-                    more = DoMore();
                     continue;
                 }
 
@@ -254,6 +256,9 @@ namespace AngelSix.GitSync
                     // Find all folders that have a .git folder in them
                     var gitRepos = FindGitRepos(settings.Directory);
 
+                    // Max path length
+                    var maxLength = gitRepos.Max(f => f.Length) + 3;
+
                     // For each repo
                     gitRepos.ForEach(repo =>
                     {
@@ -262,7 +267,11 @@ namespace AngelSix.GitSync
                             // FETCH
                             var changes = !GitCheck(repo, settings.Mode, settings.Fetch, pendingChanges, pendingPushes);
 
-                            branches.Add(new Tuple<string, string>(repo, RunProcess("git", "rev-parse --abbrev-ref HEAD", repo).Replace("\r", "").Replace("\n", "") + (changes ? " *" : "")));
+                            var result = new Tuple<string, string>(repo, RunProcess("git", "rev-parse --abbrev-ref HEAD", repo).Replace("\r", "").Replace("\n", "") + (changes ? " *" : ""));
+
+                            branches.Add(result);
+
+                            Console.WriteLine(result.Item1.PadRight(maxLength) + result.Item2);
                         }
                         else if (settings.Mode == OperationMode.BranchDisplayAll)
                         {
@@ -329,12 +338,7 @@ namespace AngelSix.GitSync
 
                     if (settings.Mode == OperationMode.BranchDisplay)
                     {
-                        if (branches.Count > 0)
-                        {
-                            var maxLength = branches.Max(f => f.Item1.Length) + 3;
-
-                            branches.ForEach(branch => Console.WriteLine(branch.Item1.PadRight(maxLength) + branch.Item2));
-                        }
+                       
                     }
                     else if (settings.Mode == OperationMode.BranchDisplayAll)
                     {
@@ -419,18 +423,7 @@ namespace AngelSix.GitSync
                         Console.WriteLine("");
                     }
                 }
-
-                more = DoMore();
             }
-        }
-
-        private static bool DoMore()
-        {
-            Console.WriteLine("Done. Press y to do another command, or any other key to close...");
-            var more = Console.ReadLine().ToLower() == "y";
-            Console.WriteLine("");
-
-            return more;
         }
 
         private static void ExtractArguments(string[] args, Settings settings)
@@ -438,7 +431,7 @@ namespace AngelSix.GitSync
             // Load mode and directory
             if (args?.Length > 0)
             {
-                for (int i = 0; i < args.Length; i++)
+                for (var i = 0; i < args.Length; i++)
                 {
                     if (args[i] == "-c")
                         settings.Mode = OperationMode.Check;
